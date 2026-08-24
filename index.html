@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maisha &amp; Yusuf — Wedding Itinerary</title>
+<title>Maisha &amp; Yusuf's Wedding Weekend</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -94,9 +94,11 @@
   .search-row{
     display:flex;
     gap:10px;
+    min-width:0;
   }
   input[type="text"]{
-    flex:1;
+    flex:1 1 0;
+    min-width:0;
     padding:13px 14px;
     border-radius:10px;
     border:1.5px solid #E3D6BC;
@@ -104,6 +106,7 @@
     font-size:16px;
     background:#fff;
     color: var(--ink);
+    box-sizing:border-box;
   }
   input[type="text"]:focus{
     outline:none;
@@ -244,6 +247,12 @@
     text-decoration:none;
     border-bottom:1px solid rgba(184,85,96,0.4);
   }
+  .rsvp-note a{
+    color: var(--rose);
+    text-decoration:none;
+    border-bottom:1px solid rgba(184,85,96,0.4);
+    font-weight:500;
+  }
 
   /* ADMIN */
   .admin-wrap{
@@ -343,7 +352,10 @@
 <!-- GUEST VIEW -->
 <div id="guestView">
   <header class="hero">
-    <h1>Maisha &amp; Yusuf</h1>
+    <h1>Maisha &amp; Yusuf's Wedding Weekend</h1>
+    <div class="rsvp-note-header" style="position:relative; text-align:center; font-size:13px; color:var(--gold-soft); margin:10px 0 16px; line-height:1.6;">
+      Please make sure to RSVP on our wedding website <a href="https://www.theknot.com/maishaandyusuf" target="_blank" rel="noopener" style="color:var(--gold-soft); font-weight:600; text-decoration:none; border-bottom:1px solid rgba(228,199,122,0.5);">www.theknot.com/maishaandyusuf</a> by September 30th.
+    </div>
     <div class="dates">November 5–8 · Find your personal schedule below</div>
   </header>
 
@@ -363,6 +375,9 @@
   </div>
 
   <footer>
+    <div style="font-size:12px; color:#8a746c; margin-bottom:14px;">
+      Please visit our <a href="https://www.theknot.com/maishaandyusuf" target="_blank" rel="noopener">wedding website</a> for more information or updates.
+    </div>
     <span onclick="showAdmin()" style="cursor:pointer; opacity:0.45; font-size:14px; padding:12px 20px; display:inline-block; user-select:none;">• • •</span>
   </footer>
 </div>
@@ -559,12 +574,16 @@ async function doSearch(){
       return;
     }
     myEvents.forEach(ev => {
+      const mapsUrl = ev.location ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.location)}` : null;
+      const whereContent = mapsUrl
+        ? `<a href="${mapsUrl}" target="_blank" rel="noopener" style="color:var(--ink); text-decoration:none; border-bottom:1px solid rgba(199,154,62,0.5);">${escapeHtml(ev.location)}</a>`
+        : escapeHtml('TBD');
       html += `
         <div class="pass">
           <div class="pass-main">
             <div class="pass-event">${escapeHtml(ev.name)}</div>
             <div class="pass-detail"><span class="label">Time</span> ${escapeHtml(ev.time || 'TBD')}</div>
-            <div class="pass-detail"><span class="label">Where</span> ${escapeHtml(ev.location || 'TBD')}</div>
+            <div class="pass-detail"><span class="label">Where</span> ${whereContent}</div>
           </div>
           <div class="perforation"></div>
           <div class="pass-stub">
